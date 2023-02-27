@@ -6,6 +6,7 @@ let signInPage= new SignInPage();
 describe('Test Video Rokoko Page', () => {
     beforeEach(() => {
         signInPage.navigate();
+        cy.wait(4000)
         signInPage.getHeader().should('be.visible')
         signInPage.getHeader().should('contain.text', 'Get started using your Rokoko ID');
         signInPage.getEmailInput().type("efthymioumarkella@gmail.com")
@@ -19,7 +20,6 @@ describe('Test Video Rokoko Page', () => {
         dashBoardPage.skipInformativeModal()
         dashBoardPage.getHeader().should('contain.text', 'MyName')
         dashBoardPage.createNewScene('SceneName')
-        dashBoardPage.
     })
 })
 

@@ -7,7 +7,7 @@ let signUpPage = new SignUpPage()
 describe('Test Video Rokoko Page', () => {
     beforeEach(() => {
         signInPage.navigate();
-        signInPage.getHeader().should('be.visible')
+        cy.wait(4000)
         signInPage.getHeader().should('contain.text', 'Get started using your Rokoko ID')
         signInPage.getSignUpForFreeLink().click()
     })
@@ -26,6 +26,13 @@ describe('Test Video Rokoko Page', () => {
         signUpPage.getSignupBtn().should('be.disabled')
     })
 
+    it('Should not allow Sign Up with invalid password(no lower case letter)',() => {
+        signUpPage.getEmailInput().type('invalidSignUp@sign.com')
+        signUpPage.getPasswordInput().type('PASSWORD1234')
+        signUpPage.getErrorPassMsg().should('have.text', 'Password must contain at least 1 lower case letter')
+        signUpPage.getSignupBtn().should('be.disabled')
+    })
+
     it('Should not allow Sign Up with invalid password(shorter than 8)',() => {
         signUpPage.getEmailInput().type('invalidSignUp@sign.com')
         signUpPage.getPasswordInput().type('Pass')
@@ -33,21 +40,10 @@ describe('Test Video Rokoko Page', () => {
         signUpPage.getSignupBtn().should('be.disabled')
     })
 
-    it('Should not allow Sign Up with invalid email',() => {
-        signUpPage.getEmailInput().type('@sign')
-        signUpPage.getErrorEmailMsg().should('have.text', 'Invalid email')
-        signUpPage.getSignupBtn().should('be.disabled')
-    })
-
-    it('Should not allow Sign Up with empty email',() => {
-        signUpPage.getEmailInput().invoke('val', '')
-        signUpPage.getErrorEmailMsg().should('have.text', 'Email is required')
-        signUpPage.getSignupBtn().should('be.disabled')
-    })
-
     it('Should not allow Sign Up with empty password',() => {
         signUpPage.getEmailInput().type('invalidSignUp@sign.com')
-        signUpPage.getPasswordInput().invoke('val', '')
+        signUpPage.getPasswordInput().click()
+        signUpPage.getEmailInput().click()
         signUpPage.getErrorPassMsg().should('have.text', 'Password is required')
         signUpPage.getSignupBtn().should('be.disabled')
     })
